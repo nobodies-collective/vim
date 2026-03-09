@@ -12,6 +12,9 @@ function pickBestTicket(tickets, { email, ticketId }) {
 }
 
 export const lookupUserTicket = wrapAsync(async ({ email, ticketId }) => {
+  if (!config.noonerHuntApi || !config.noonerHuntKey) {
+    return -1
+  }
   const lookup = ticketId ? `QTK${ticketId}` : email
   const response = await fetch(`${config.noonerHuntApi}/huntthenooner?key=${config.noonerHuntKey}&nooner=${lookup}`, {
     method: 'GET',
