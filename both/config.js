@@ -1,12 +1,12 @@
 // Org-level configuration. Update these when forking for a new organization.
 export const orgConfig = {
-  name: 'FixMe',
-  domain: 'FIXME.example',
-  supportEmail: 'fist@FIXME.example',
-  noreplyEmail: 'no-reply@FIXME.example',
+  name: 'Nobodies Collective',
+  domain: 'nobodies.team',
+  supportEmail: 'fist@nobodies.team',
+  noreplyEmail: 'no-reply@nobodies.team',
   repoUrl: 'https://github.com/nobodies-collective/fist',
 
   // External links shown to users
-  joinUrl: 'https://FIXME.example/join/',
-  volunteeringUrl: 'https://FIXME.example/volunteering/',
+  joinUrl: 'https://nobodies.team/join/',
+  volunteeringUrl: 'https://nobodies.team/volunteering/',
 }
