@@ -1,6 +1,6 @@
 # Integrations
 
-FIST integrates with ticket verification/auth providers and SMTP email delivery.
+VIM integrates with ticket verification/auth providers and SMTP email delivery.
 
 ## Fistbump (Primary External Integration)
 

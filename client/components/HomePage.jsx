@@ -84,7 +84,7 @@ export function HomePage({ user, settings, isLoaded }) {
               <div className="col-lg-4 ml-auto">
                 <p className="lead">
                   You&apos;ve been here before so we&apos;re not going to
-                  bore you with the usual speech about what Nowhere is.
+                  bore you with the usual speech about what Elsewhere is.
                   You can just sit here and enjoy the fun countdown.
                 </p>
               </div>

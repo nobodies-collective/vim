@@ -76,7 +76,7 @@ React Router v5 in `client/router.jsx`. Role-based routes:
 - `/metalead/department/:deptId` - Department lead dashboard
 - `/noinfo/*` - No-info lead views (note: router uses `authTest="isALead"`, not strict NoInfo check)
 
-Auth wrapper `RequireAuth` checks: login, email verification, FIST open date, roles, form completion.
+Auth wrapper `RequireAuth` checks: login, email verification, VIM open date, roles, form completion.
 
 ### Collections
 - `EventSettings` (`both/collections/settings.js`) - Event configuration (dates, periods)

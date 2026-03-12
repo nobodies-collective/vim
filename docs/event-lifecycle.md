@@ -1,6 +1,6 @@
 # Event Lifecycle
 
-FIST supports an annual cycle: pre-open setup, build, event, strike, and rollover.
+VIM supports an annual cycle: pre-open setup, build, event, strike, and rollover.
 
 ## Phases
 

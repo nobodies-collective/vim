@@ -1,6 +1,6 @@
 # Organizational Structure
 
-FIST models a three-level hierarchy:
+VIM models a three-level hierarchy:
 
 1. Division
 2. Department

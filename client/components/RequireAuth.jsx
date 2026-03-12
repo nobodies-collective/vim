@@ -31,7 +31,7 @@ export function RequireAuth({
   if (moment().isBefore(settings.fistOpenDate)
     && !verifiedEmails.some(({ address }) => address.endsWith(`@${orgConfig.domain}`))
     && !Volunteers.auth.isALead()) {
-    // FIST is closed for now
+    // VIM is closed for now
     return <Redirect to="/" />
   }
   if (authTest) {

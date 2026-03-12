@@ -26,9 +26,9 @@ export const TermsCheckbox = ({ termsAgreed, checkTerms }) => (
       <p>
         I consent to my data being stored for a period of up to 18 months from the last date my data
         was entered or modified, and for it to be used only to facilitate the scheduling and safety
-        of volunteers on behalf of Going Nowhere S.L. I understand that you will delete my data
-        within one month of my giving formal written notice to the registered address of Going
-        Nowhere S.L., asking you to do so.
+        of volunteers on behalf of Asociación Nobodies Collective. I understand that you will delete my data
+        within one month of my giving formal written notice to the registered address of Asociación
+        Nobodies Collective, asking you to do so.
       </p>
     </div>
   </>

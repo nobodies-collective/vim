@@ -1,6 +1,6 @@
-# FIST Runbook
+# VIM Runbook
 
-Operational reference for deploying and running FIST (volunteer shift management for Nowhere).
+Operational reference for deploying and running VIM (volunteer shift management for Elsewhere).
 
 ## Deployment
 
@@ -58,7 +58,7 @@ To use Gmail/Google Workspace as the mail relay:
 
 - **URL:** `https://fistbump.goingnowhere.org/huntthenooner`
 - **What it does:** Verifies that users hold a valid event ticket. Called on signup and periodically via cron.
-- **If unavailable:** App runs fine. Users can sign up and use FIST, but their ticket status won't be verified. The cron job logs errors but doesn't crash.
+- **If unavailable:** App runs fine. Users can sign up and use VIM, but their ticket status won't be verified. The cron job logs errors but doesn't crash.
 - **Credentials:** `NOONER_HUNT_KEY` env var (API key)
 
 ### Quicket (ticketing system)
@@ -75,11 +75,11 @@ Before each event, update these hardcoded values:
 | Event name | `both/init.js`, `imports/fixtures/settings-fixtures.js` | `nowhere2026` |
 | Previous event name | Same files | `nowhere2025` |
 | Role migration | `server/migrations.js` | Promote previous year's admins/managers to new scope |
-| Email from address | `server/email.js` | `FIST <fist@nobodies.team>` |
-| Site name | `server/email.js` | `FIST Nowhere 2026` |
-| Homepage title | `client/components/HomePage.jsx` | `Co-Create Nowhere 2026` |
+| Email from address | `server/email.js` | `VIM <vim@nobodies.team>` |
+| Site name | `server/email.js` | `VIM Elsewhere 2026` |
+| Homepage title | `client/components/HomePage.jsx` | `Co-Create Elsewhere 2026` |
 | Homepage links | `client/components/HomePage.jsx` | Update org website URLs |
-| Email domain gate | `server/accounts.js`, `client/components/RequireAuth.jsx` | `@nobodies.team` (controls early access before FIST open date) |
+| Email domain gate | `server/accounts.js`, `client/components/RequireAuth.jsx` | `@nobodies.team` (controls early access before VIM open date) |
 | Fixture email from | `imports/fixtures/settings-fixtures.js` | `no-reply@nobodies.team` |
 
 ## Dev Credentials (local only)

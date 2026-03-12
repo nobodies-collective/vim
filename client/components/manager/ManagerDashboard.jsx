@@ -16,7 +16,7 @@ import { CsvExportButton } from '../lead/CsvExportButton.jsx'
 import { Volunteers } from '../../../both/init'
 import { NewEvent } from './NewEvent.jsx'
 
-// name of the organization. Nowhere is a two level hierarchy
+// name of the organization. Elsewhere is a two level hierarchy
 // (departments,teams) with one top level division
 const topLevelDivision = 'NOrg'
 

@@ -61,7 +61,7 @@ Special role for volunteer coordinators who need access to personal information 
 1. User creates account with email
 2. Verifies email address
 3. Completes volunteer profile (experience, skills, dietary needs, emergency contact)
-4. Browses available shifts once registration opens (FIST date)
+4. Browses available shifts once registration opens (VIM date)
 5. Signs up for shifts that fit their schedule
 6. Receives confirmation when leads approve signups
 
@@ -137,7 +137,7 @@ Division (e.g., "Operations")
 
 ### For Users
 
-The production application is accessed through the Nowhere volunteer portal (URL provided to registered event participants).
+The production application is accessed through the Elsewhere volunteer portal (URL provided to registered event participants).
 
 ---
 
@@ -189,8 +189,8 @@ Managed via `alanning:roles` package with event-scoped permissions:
 - `noinfo` - Volunteer welfare access
 - Team/department IDs as roles for leads
 
-### FIST Date
-"FIST Open Date" - when volunteer signup opens to the general public. Before this date, only leads and managers can access the system.
+### VIM Date
+"VIM Open Date" - when volunteer signup opens to the general public. Before this date, only leads and managers can access the system.
 
 ---
 
@@ -240,4 +240,4 @@ The core volunteer management logic is in a separate package ([meteor-volunteers
 
 ## License
 
-This project supports the Nowhere community. Check repository for specific license terms.
+This project supports the Elsewhere community. Check repository for specific license terms.

@@ -1,6 +1,6 @@
 # Duty Types and Scheduling
 
-FIST has four types of duties that volunteers can sign up for, plus a scheduling structure (rotas) that organizes shifts into patterns.
+VIM has four types of duties that volunteers can sign up for, plus a scheduling structure (rotas) that organizes shifts into patterns.
 
 ## Duty Types
 

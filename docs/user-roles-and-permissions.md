@@ -1,6 +1,6 @@
 # User Roles and Permissions
 
-FIST uses scoped roles tied to organizational units (department/team IDs) plus global manager/admin roles.
+VIM uses scoped roles tied to organizational units (department/team IDs) plus global manager/admin roles.
 
 ## Effective Role Model
 
@@ -86,7 +86,7 @@ For protected routes, `RequireAuth` enforces this order:
 
 1. User loaded and authenticated.
 2. At least one verified email.
-3. `fistOpenDate` gate (bypass for org-domain emails or leads).
+3. `fistOpenDate` gate (VIM open date; bypass for org-domain emails or leads).
 4. Route-specific auth test (for manager/lead/noinfo pages).
 5. Completed form (`profile.formFilled`) unless on `/profile`.
 

@@ -1,12 +1,12 @@
 # Glossary
 
-Canonical terminology for FIST, aligned with current UI labels and fixture names.
+Canonical terminology for VIM, aligned with current UI labels and fixture names.
 
 ## Core Terms
 
 | Term | Definition | UI Label / Source |
 |------|------------|-------------------|
-| FIST | For Information and Scheduling of Teams | App name |
+| VIM | Volunteer Information Manager | App name |
 | Voluntell | Lead/NoInfo direct enrollment of a user into duty signup | `enroll` -> "Voluntell" |
 | Rota | Group of related shifts for a team and date range | `add_rota`, `rota_export` |
 | Duty | Generic work item type: shift, project, lead, task | Data model term |

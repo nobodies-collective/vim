@@ -24,7 +24,7 @@ All are protected by `RequireAuth` with `authTest="isManager"`.
 - Early Entry tools + CSV export (`ee.csv`).
 - Danger Zone:
   - Send Reminders to everyone (`email.sendMassShiftReminder`).
-  - Prepare FIST for a new event (`event.new.event`).
+  - Prepare VIM for a new event (`event.new.event`).
 
 ### Main Pane
 

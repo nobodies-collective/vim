@@ -3,7 +3,7 @@
 # Exit on errors
 set -e
 
-CONTAINER=volunteers-nowhere
+CONTAINER=volunteers-elsewhere
 
 echo "Building $CONTAINER ..."
 docker build -t $CONTAINER .

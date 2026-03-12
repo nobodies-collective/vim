@@ -1,12 +1,12 @@
 # Product Overview
 
-## What is FIST?
+## What is VIM?
 
-FIST (**F**or **I**nformation and **S**cheduling of **T**eams) is a web application that manages volunteer coordination for participatory events. It handles the entire lifecycle of volunteer engagement: registration, profile collection, shift browsing, signup, approval, scheduling, and on-site coordination.
+VIM (**V**olunteer **I**nformation **M**anager) is a web application that manages volunteer coordination for participatory events. It handles the entire lifecycle of volunteer engagement: registration, profile collection, shift browsing, signup, approval, scheduling, and on-site coordination.
 
 ## The Event
 
-FIST was built for **FixMe** (formerly Nowhere), a participatory burn event held annually in a remote location in Spain. FixMe is:
+VIM was built for **Elsewhere**, a participatory burn event held annually in a remote location in Spain. Elsewhere is:
 
 - An experiment in creative freedom, participation, and cash-free community
 - Conceived, built, experienced, and returned to nothing by its participants
@@ -14,9 +14,9 @@ FIST was built for **FixMe** (formerly Nowhere), a participatory burn event held
 
 The event follows the principles of regional Burning Man events: radical self-reliance, participation, leave no trace, and decommodification.
 
-## The Problem FIST Solves
+## The Problem VIM Solves
 
-Running a multi-day event in a remote desert requires hundreds of volunteers across dozens of specialized teams. FIST addresses:
+Running a multi-day event in a remote desert requires hundreds of volunteers across dozens of specialized teams. VIM addresses:
 
 - **Matching volunteers to roles** based on skills, preferences, and availability
 - **Covering all shifts** across three phases (setup, event, teardown) with enough people
@@ -27,9 +27,9 @@ Running a multi-day event in a remote desert requires hundreds of volunteers acr
 
 ## Project Vision
 
-FIST is designed to be reusable. The core volunteer management logic lives in the [`meteor-volunteers`](https://github.com/goingnowhere/meteor-volunteers) package, which is event-agnostic. This application wraps that package with event-specific configuration (team definitions, organizational structure, integrations, branding).
+VIM is designed to be reusable. The core volunteer management logic lives in the [`meteor-volunteers`](https://github.com/goingnowhere/meteor-volunteers) package, which is event-agnostic. This application wraps that package with event-specific configuration (team definitions, organizational structure, integrations, branding).
 
-The goal is that other participatory events could fork FIST and configure it for their own organizational structure by changing the org config and team definitions.
+The goal is that other participatory events could fork VIM and configure it for their own organizational structure by changing the org config and team definitions.
 
 ## Key Design Principles
 

@@ -80,7 +80,7 @@ const units = {
     {
       name: 'DVS',
       parent: 'Volunteers',
-      description: "The Department of Volunteer Servicing keeps our set-up and strike crews healthy\nand (mostly) sane by distributing all the salty snacks and water they need make\nNowhere ready to happen. If you're available before or after event time and\ndon't mind seeing everything before it's ready then join in here.\nNote: during Set-up and strike we work all day, with a nice deserved siesta\nafter lunch, it\u2019s not a shift system like during event time.\n",
+      description: "The Department of Volunteer Servicing keeps our set-up and strike crews healthy\nand (mostly) sane by distributing all the salty snacks and water they need make\nElsewhere ready to happen. If you're available before or after event time and\ndon't mind seeing everything before it's ready then join in here.\nNote: during Set-up and strike we work all day, with a nice deserved siesta\nafter lunch, it\u2019s not a shift system like during event time.\n",
     },
     {
       name: 'Kunsthaus',
@@ -105,28 +105,28 @@ const units = {
     {
       name: 'Fire Arena',
       parent: 'Malfare',
-      description: 'You love the smell of paraffin and you are passionate about fire performing and\nwilling to share your skills and to support the Nowhere fire community. You\nlove hippies and especially enjoy detracting them from putting those lovely\nplastic-y butterfly wings (and themselves) on fire? Come help us with\nmotivating people, getting the arena watched after, secured and organised...\nand of course, enjoy the show! We work event time in short shifts and a small\nteam.\n',
+      description: 'You love the smell of paraffin and you are passionate about fire performing and\nwilling to share your skills and to support the Elsewhere fire community. You\nlove hippies and especially enjoy detracting them from putting those lovely\nplastic-y butterfly wings (and themselves) on fire? Come help us with\nmotivating people, getting the arena watched after, secured and organised...\nand of course, enjoy the show! We work event time in short shifts and a small\nteam.\n',
       skills: ['fire safety experience'],
     },
     {
       name: 'Power',
       parent: 'SLAP',
-      description: 'We power all NORG structures, like Middle of Nowhere or the Red Cross, but also\nArt and Innovation projects around all site. Want to help keep the power on?\nJoin us! We work both during Set-up and Strike (all day) then event time (in\nshifts).\n',
+      description: 'We power all NORG structures, like Middle of Elsewhere or the Red Cross, but also\nArt and Innovation projects around all site. Want to help keep the power on?\nJoin us! We work both during Set-up and Strike (all day) then event time (in\nshifts).\n',
     },
     {
       name: 'Sound',
       parent: 'SLAP',
-      description: 'We run the sound a Middle of Nowhere and provide advice to barrios in the\ndifferent Sounds Zones on site. Want to help the sound happen for the amazing\nbands and workshops that happen at Middle of Nowhere? Join us! We work mostly\nevent time, in shifts.\n',
+      description: 'We run the sound a Middle of Elsewhere and provide advice to barrios in the\ndifferent Sounds Zones on site. Want to help the sound happen for the amazing\nbands and workshops that happen at Middle of Elsewhere? Join us! We work mostly\nevent time, in shifts.\n',
     },
     {
       name: 'Lights',
       parent: 'SLAP',
-      description: 'We make sure all NORG structures, like Middle of Nowhere or Gate, but also Art\nand Innovation projects around all site are illuminated, to be safer and also\nlook pretty cool !! Want to shine light on Nowhere? Join us! We work mostly\nevent time, in shifts\n',
+      description: 'We make sure all NORG structures, like Middle of Elsewhere or Gate, but also Art\nand Innovation projects around all site are illuminated, to be safer and also\nlook pretty cool !! Want to shine light on Elsewhere? Join us! We work mostly\nevent time, in shifts\n',
     },
     {
       name: 'Build Crew',
       parent: 'BDSM',
-      description: 'Create Nowhere from the dirt! This team is responsible for taking the blank\nfield of dirt and turning it into Middle of Nowhere, Malfare, Gate, Perimeter,\nOhana House, Signs, trenches for power and so much more. You will be placed on\na project or team... maybe even a few projects or teams... to help change the\nfield of dirt into a temporary city. If you have specific skills such as\ncarpentry or rigging, please let us know! Note: during Set-up and strike we\nwork all day, with a nice deserved siesta after lunch, it\u2019s not a shift system\nlike during event time.\n',
+      description: 'Create Elsewhere from the dirt! This team is responsible for taking the blank\nfield of dirt and turning it into Middle of Elsewhere, Malfare, Gate, Perimeter,\nOhana House, Signs, trenches for power and so much more. You will be placed on\na project or team... maybe even a few projects or teams... to help change the\nfield of dirt into a temporary city. If you have specific skills such as\ncarpentry or rigging, please let us know! Note: during Set-up and strike we\nwork all day, with a nice deserved siesta after lunch, it\u2019s not a shift system\nlike during event time.\n',
     },
     {
       name: 'Strike Crew',
@@ -162,7 +162,7 @@ const units = {
     {
       name: 'Nomads',
       parent: 'Malfare',
-      description: "Nomads are members of the Nowhere community who volunteer some of their time to\ndispense information and act as non-confrontational mediators. Responding to\nthe ever-changing environment, Nomads promote awareness of potential hazards,\nfrom sunstroke to wet weather, and address situations that could otherwise\nrequire outside intervention. The most important 'qualification' for being a\nNomad is the desire to be an interactive participant. Helpful qualities include\na sense of humour, flexibility, and a good pair of walking shoes. Whenever\npossible, first-time Nomads will be paired with experienced Nomads \u2014 as well as\nhaving the support from an experienced leadership team. We work event time on\nsix hour shifts.\n",
+      description: "Nomads are members of the Elsewhere community who volunteer some of their time to\ndispense information and act as non-confrontational mediators. Responding to\nthe ever-changing environment, Nomads promote awareness of potential hazards,\nfrom sunstroke to wet weather, and address situations that could otherwise\nrequire outside intervention. The most important 'qualification' for being a\nNomad is the desire to be an interactive participant. Helpful qualities include\na sense of humour, flexibility, and a good pair of walking shoes. Whenever\npossible, first-time Nomads will be paired with experienced Nomads \u2014 as well as\nhaving the support from an experienced leadership team. We work event time on\nsix hour shifts.\n",
       quirks: ['sober shift'],
       skills: ['calm under pressure', 'mediation'],
     },
@@ -184,13 +184,13 @@ const units = {
     {
       name: 'Grumpy Katz Gate Krew',
       parent: 'GG&P',
-      description: "The Grumpy Katz are our gate-keepers, the 'guardians of the wall', the visible\nfrontier between the real world and Nowhere; they check tickets and give out\nwristbands, they oversee all entry and exit from our gates, helping vehicles\nand people\u00b4s traffic onsite. Katz are the first ones you\u00b4ll meet on the way in\nand last one you\u00b4ll say goodbye to on the way out. We work in shifts, stating\none week before the official opening and finishing after the last bus has left\non Monday\n",
+      description: "The Grumpy Katz are our gate-keepers, the 'guardians of the wall', the visible\nfrontier between the real world and Elsewhere; they check tickets and give out\nwristbands, they oversee all entry and exit from our gates, helping vehicles\nand people\u00b4s traffic onsite. Katz are the first ones you\u00b4ll meet on the way in\nand last one you\u00b4ll say goodbye to on the way out. We work in shifts, stating\none week before the official opening and finishing after the last bus has left\non Monday\n",
       quirks: ['work in the shade'],
     },
     {
       name: 'Perimeter Crew',
       parent: 'GG&P',
-      description: 'The Perimeter Crew is dedicated to watch over the edges of Nowhere and make\nsure they stay safe, protect the community within the event while walking\naround our compass shaped city. We also help the Grumpy Kats dealing with the\nincoming and outgoing traffic in Entry end Exodus days. We work event time in\nfour to six hours shifts.\n',
+      description: 'The Perimeter Crew is dedicated to watch over the edges of Elsewhere and make\nsure they stay safe, protect the community within the event while walking\naround our compass shaped city. We also help the Grumpy Kats dealing with the\nincoming and outgoing traffic in Entry end Exodus days. We work event time in\nfour to six hours shifts.\n',
     },
     {
       name: 'Greeters',
@@ -205,7 +205,7 @@ const units = {
     {
       name: 'Ice Ice Baby!',
       parent: 'Production',
-      description: 'The coolest place at Nowhere, where volunteers help the sale of ice onsite\nduring the event. Shifts are four hours and you are guaranteed to meet some\nreally incredible people. Plus think of the gifts... everyone loves the ice\ncrew! We work event time on 4 hours shifts.\n',
+      description: 'The coolest place at Elsewhere, where volunteers help the sale of ice onsite\nduring the event. Shifts are four hours and you are guaranteed to meet some\nreally incredible people. Plus think of the gifts... everyone loves the ice\ncrew! We work event time on 4 hours shifts.\n',
     },
     {
       name: 'Ohana House',
@@ -215,7 +215,7 @@ const units = {
     {
       name: 'Shit Ninjas',
       parent: 'Production',
-      description: 'The real Heroes of Nowhere!!**!** Everyone likes a nice comfy bit of alone\ntime, and you\u2019re the people that make this happen. You\u2019ll do a brief trip round\nthe site tidying up the compost toilets and making sure they\u2019ve got paper, hand\nsanitizer and other needed items in them. We work event time on 4 hours shifts.\n',
+      description: 'The real Heroes of Elsewhere!!**!** Everyone likes a nice comfy bit of alone\ntime, and you\u2019re the people that make this happen. You\u2019ll do a brief trip round\nthe site tidying up the compost toilets and making sure they\u2019ve got paper, hand\nsanitizer and other needed items in them. We work event time on 4 hours shifts.\n',
     },
     {
       name: 'Welfare Enough',

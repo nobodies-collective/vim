@@ -1,6 +1,6 @@
-# FIST Documentation
+# VIM Documentation
 
-**FIST** (For Information and Scheduling of Teams) is a volunteer coordination platform.
+**VIM** (Volunteer Information Manager) is a volunteer coordination platform.
 
 This folder has two layers of documentation:
 

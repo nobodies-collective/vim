@@ -14,7 +14,7 @@ Before `fistOpenDate`, users see:
 
 After `fistOpenDate`, users see:
 
-- FIST tagline.
+- VIM tagline.
 - CTA to register or go to dashboard.
 
 ## 2. Registration Paths

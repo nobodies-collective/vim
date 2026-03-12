@@ -1,6 +1,6 @@
 # Rebuild Blueprint
 
-This blueprint is for recreating FIST in a different stack (example: Next.js + FastAPI + Postgres).
+This blueprint is for recreating VIM in a different stack (example: Next.js + FastAPI + Postgres).
 
 ## 1. Target Capabilities
 
