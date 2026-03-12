@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FIST (For Information and Scheduling of Teams) is a volunteer management system for the FixMe event (formerly Nowhere), built on Meteor. It wraps the reusable [meteor-volunteers](https://github.com/goingnowhere/meteor-volunteers) package with event-specific configuration and UI. See `docs/` for comprehensive system documentation.
+VIM (Volunteer Information Manager) is a volunteer management system for the Elsewhere event, built on Meteor. It wraps the reusable [meteor-volunteers](https://github.com/goingnowhere/meteor-volunteers) package with event-specific configuration and UI. See `docs/` for comprehensive system documentation.
 
 ## Commands
 
@@ -25,10 +25,10 @@ npm run lint
 git submodule foreach 'git pull origin master'
 ```
 
-**Dev credentials:**
-- Admin: admin@goingnowhere.org / testtest
-- Manager: manager@goingnowhere.org / testtest
-- User: normal@goingnowhere.org / testtest
+**Dev credentials (dev mode only, created by fixtures):**
+- Admin: admin@nobodies.team / testtest
+- Manager: manager@nobodies.team / testtest
+- User: normal@nobodies.team / testtest
 
 ## Architecture
 
@@ -51,8 +51,8 @@ The core volunteer logic lives in `packages/meteor-volunteers`. This app wraps i
 ```javascript
 // both/init.js
 export const Volunteers = new VolunteersClass({
-  eventName: 'fixme2026',
-  previousEventName: 'nowhere2025',
+  eventName: 'elsewhere2026',
+  previousEventName: 'somethingElse2025',
   SettingsCollection: EventSettings,
 })
 ```

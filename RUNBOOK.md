@@ -84,8 +84,9 @@ Before each event, update these hardcoded values:
 
 ## Dev Credentials (local only)
 
-- Admin: `admin@goingnowhere.org` / `testtest`
-- User: `normal@goingnowhere.org` / `testtest`
+- Admin: `admin@nobodies.team` / `testtest`
+- Manager: `manager@nobodies.team` / `testtest`
+- User: `normal@nobodies.team` / `testtest`
 
 Loaded from fixtures when `NODE_ENV` is not `production`.
 
@@ -128,4 +129,4 @@ docker compose exec mongo mongorestore --drop /backups/<filename>
 | MongoDB 4.4 (EOL Feb 2024) | High | Meteor 2.x supports up to 6.0 |
 | Meteor 2.11 | Medium | 2.16+ or 3.x would unblock Node upgrade |
 | React 16 | Low | Works but no longer maintained |
-| Several `@goingnowhere.org` hardcoded refs | Medium | See "Yearly Event Cycle" above |
+| `goingnowhere:volunteers` Meteor package name | Medium | Renaming requires package.js change + all import updates |

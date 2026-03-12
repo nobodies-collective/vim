@@ -1,4 +1,4 @@
-# Volunteers Nowhere - Application Overview
+# VIM - Application Overview
 
 > **Note:** This document is superseded by the `docs/` folder, which contains comprehensive, up-to-date documentation. Start with [docs/README.md](docs/README.md) for the full documentation index. This file is retained for reference but may contain stale information.
 
@@ -8,7 +8,7 @@
 
 ## What Is This Application?
 
-**Volunteers Nowhere** is a volunteer management system built for [Nowhere](https://www.goingnowhere.org/), a participatory arts and community event held annually in Spain. The application helps coordinate hundreds of volunteers who make the event possible.
+**VIM** (Volunteer Information Manager) is a volunteer management system for participatory arts and community events. The application helps coordinate hundreds of volunteers who make events possible.
 
 ---
 
@@ -114,7 +114,7 @@ Division (e.g., "Operations")
 
 2. **Clone with submodules:**
    ```bash
-   git clone git@github.com:goingnowhere/volunteers-nowhere.git --recurse-submodules
+   git clone git@github.com:nobodies-collective/vim.git --recurse-submodules
    cd volunteers-nowhere
    ```
 
@@ -131,8 +131,9 @@ Division (e.g., "Operations")
 
 5. **Access the app:**
    - URL: http://localhost:3000/
-   - Admin login: admin@goingnowhere.org / testtest
-   - User login: normal@goingnowhere.org / testtest
+   - Admin login: admin@nobodies.team / testtest
+   - Manager login: manager@nobodies.team / testtest
+   - User login: normal@nobodies.team / testtest
 
 ### For Users
 
@@ -216,7 +217,7 @@ This application handles personal information including:
 
 ## Contributing
 
-The core volunteer management logic is in a separate package ([meteor-volunteers](https://github.com/goingnowhere/meteor-volunteers)) designed to be reusable by other events. Contributions to both repositories are welcome.
+The core volunteer management logic is in a separate package ([meteor-volunteers](https://github.com/goingnowhere/meteor-volunteers)) designed to be reusable by other events.
 
 ### Code Style
 - ESLint with Airbnb base configuration
@@ -233,8 +234,7 @@ The core volunteer management logic is in a separate package ([meteor-volunteers
 
 ## Support
 
-- **Issues:** https://github.com/goingnowhere/volunteers-nowhere/issues
-- **Nowhere Event:** https://www.goingnowhere.org/
+- **Issues:** https://github.com/nobodies-collective/vim/issues
 
 ---
 
