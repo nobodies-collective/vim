@@ -130,7 +130,7 @@ export const ManagerDashboard = () => {
             className="btn btn-sm btn-light"
             onClick={() => setShowNewEventModal(true)}
           >
-            Prepare FIST for a new event
+            Prepare VIM for a new event
           </button>
         </div>
         <div className="col-10">

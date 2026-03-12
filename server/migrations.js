@@ -61,3 +61,40 @@ Migrations.add({
     )
   },
 })
+
+// Convert old-format roles (object with scope keys) to array-of-objects format
+// expected by alanning:roles 2.2.0, then rename event scopes
+Migrations.add({
+  version: 19,
+  up() {
+    // Fix any old-format roles
+    Meteor.users.find({ roles: { $exists: true, $not: { $type: 'array' } } })
+      .forEach((user) => {
+        const oldRoles = user.roles
+        if (!oldRoles || typeof oldRoles !== 'object') return
+        const newRoles = []
+        Object.entries(oldRoles).forEach(([scope, roleNames]) => {
+          if (!Array.isArray(roleNames)) return
+          const actualScope = scope === '__global_roles__' ? null : scope
+          roleNames.forEach((roleName) => {
+            newRoles.push({ _id: roleName, scope: actualScope, assigned: true })
+          })
+        })
+        Meteor.users.update(user._id, { $set: { roles: newRoles } })
+        console.log(`Migrated old-format roles for user ${user._id}`)
+      })
+  },
+})
+
+// Rename event: fixme2026 → elsewhere2026 in user roles
+Migrations.add({
+  version: 20,
+  up() {
+    Meteor.users.find({ 'roles.scope': 'fixme2026' }).forEach((user) => {
+      const newRoles = user.roles.map((role) => (
+        role.scope === 'fixme2026' ? { ...role, scope: 'elsewhere2026' } : role
+      ))
+      Meteor.users.update(user._id, { $set: { roles: newRoles } })
+    })
+  },
+})

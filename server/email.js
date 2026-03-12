@@ -375,8 +375,8 @@ export const sendReviewNotificationEmail = new ValidatedMethod({
 })
 
 // Defaults
-Accounts.emailTemplates.from = `FIST <${orgConfig.supportEmail}>`
-Accounts.emailTemplates.siteName = `FIST ${orgConfig.name} ${Volunteers.eventName}`
+Accounts.emailTemplates.from = `VIM <${orgConfig.supportEmail}>`
+Accounts.emailTemplates.siteName = `VIM ${orgConfig.name} ${Volunteers.eventName}`
 
 Accounts.emailTemplates.enrollAccount.from = () => EmailForms.getFrom('enrollAccount')
 Accounts.emailTemplates.enrollAccount.subject = (user) => {
