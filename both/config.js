@@ -2,9 +2,9 @@
 export const orgConfig = {
   name: 'Nobodies Collective',
   domain: 'nobodies.team',
-  supportEmail: 'fist@nobodies.team',
+  supportEmail: 'vim@nobodies.team',
   noreplyEmail: 'no-reply@nobodies.team',
-  repoUrl: 'https://github.com/nobodies-collective/fist',
+  repoUrl: 'https://github.com/nobodies-collective/vim',
 
   // External links shown to users
   joinUrl: 'https://nobodies.team/join/',

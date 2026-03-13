@@ -5,13 +5,13 @@ Operational reference for deploying and running VIM (volunteer shift management 
 ## Deployment
 
 Hosted on Hetzner via Coolify (self-hosted PaaS). Coolify builds from the `main` branch of
-`github.com/nobodies-collective/fist` using the repo's `Dockerfile` and `docker-compose.yml`.
+`github.com/nobodies-collective/vim` using the repo's `Dockerfile` and `docker-compose.yml`.
 
 ### Services
 
 | Service | Image | Purpose |
 |---------|-------|---------|
-| fist | Built from repo | Meteor app (Node 14, Alpine) |
+| vim | Built from repo | Meteor app (Node 14, Alpine) |
 | mongo | mongo:4.4.18 | MongoDB database |
 | mongo-backup | tiredofit/mongodb-backup | Automated DB backups to volume |
 
@@ -21,7 +21,7 @@ Hosted on Hetzner via Coolify (self-hosted PaaS). Coolify builds from the `main`
 |--------|------------|----------|
 | mongo_dbdata | mongo:/data/db | Database files |
 | mongo_backup | mongo-backup:/backups | XZ-compressed mongodump backups (every 12h, kept 6 days) |
-| user_data | fist:.../profilePictures | Uploaded profile pictures |
+| user_data | vim:.../profilePictures | Uploaded profile pictures |
 
 ## Environment Variables
 
@@ -38,7 +38,7 @@ Hosted on Hetzner via Coolify (self-hosted PaaS). Coolify builds from the `main`
 
 | Variable | Default | Override via |
 |----------|---------|-------------|
-| `ROOT_URL` | `https://fist.nobodies.team` | Coolify env or compose override |
+| `ROOT_URL` | `https://vim.nobodies.team` | Coolify env or compose override |
 | `NOONER_HUNT_API` | `https://fistbump.goingnowhere.org/huntthenooner` | Coolify env |
 | `MONGO_URL` | `mongodb://mongo/volunteers` | Only change if using external MongoDB |
 | `NODE_ENV` | `production` | Don't change |

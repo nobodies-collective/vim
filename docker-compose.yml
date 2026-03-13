@@ -4,14 +4,14 @@ volumes:
   mongo_backup:
 
 services:
-  fist:
+  vim:
     build: .
     restart: always
     depends_on:
       - mongo
     environment:
       - MONGO_URL=mongodb://mongo/volunteers
-      - ROOT_URL=${ROOT_URL:-https://fist.nobodies.team}
+      - ROOT_URL=${ROOT_URL:-https://vim.nobodies.team}
       - MAIL_URL=${MAIL_URL}
       - NOONER_HUNT_API=${NOONER_HUNT_API:-https://fistbump.goingnowhere.org/huntthenooner}
       - NOONER_HUNT_KEY=${NOONER_HUNT_KEY}

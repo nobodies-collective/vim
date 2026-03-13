@@ -211,7 +211,7 @@ Early Entry list, is important to get this information from you and add it
 to your profile on the vms.
 
 A simple way to solve this problem is to add the email you used to get your
-ticket as secondary email in your account settings (https://fist.nobodies.team/profile/settings).
+ticket as secondary email in your account settings (https://vim.nobodies.team/profile/settings).
 
 Shortly after, the system will pick up this new email address and use it to find
 your ticket number. EasyPeasy.
