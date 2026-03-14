@@ -2,6 +2,13 @@ import { Meteor } from 'meteor/meteor'
 import { Roles } from 'meteor/alanning:roles'
 import { Accounts } from 'meteor/accounts-base'
 
+const testVolunteers = Array.from({ length: 20 }, (_, i) => ({
+  name: `Volunteer ${i + 1}`,
+  email: `volunteer${i + 1}@nobodies.team`,
+  password: 'testtest',
+  roles: [],
+}))
+
 const defaultUsers = [
   {
     name: 'manager',
@@ -24,7 +31,7 @@ const defaultUsers = [
 ]
 
 export const createUserFixtures = (Volunteers) => {
-  _.each(defaultUsers, (options) => {
+  _.each([...defaultUsers, ...testVolunteers], (options) => {
     if (!Meteor.users.findOne({ 'emails.address': options.email })) {
       console.log('Create user ', options)
       options.profile = {
