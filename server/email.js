@@ -18,6 +18,24 @@ const EmailCache = new Mongo.Collection('emailCache')
 const EmailLogs = new Mongo.Collection('emailLogs')
 const EmailFails = new Mongo.Collection('emailFails')
 
+// Retry fn with explicit delay sequence (ms). Throws last error if all attempts fail.
+const retryWithDelays = (fn, delays) => {
+  let lastError
+  for (let i = 0; i <= delays.length; i++) {
+    try {
+      return fn()
+    } catch (error) {
+      lastError = error
+      if (i < delays.length) {
+        Meteor._sleepForMs(delays[i])
+      }
+    }
+  }
+  throw lastError
+}
+
+const getUserEmail = (user) => user?.emails?.[0]?.address ?? '(unknown)'
+
 let emailLock = false
 let successiveFailures = 0
 let emailSendInterval
@@ -53,8 +71,10 @@ const sendEmail = (cache) => {
           email,
           userId,
           retries,
+          failedAt: new Date(),
           errorName: error.name,
           errorMsg: error.message,
+          errorStack: error.stack,
         })
         EmailCache.remove({ _id })
       }
@@ -397,19 +417,20 @@ Accounts.emailTemplates.verifyEmail.subject = (user) => {
 
 const tmpEmailEn = Accounts.sendEnrollmentEmail
 Accounts.sendEnrollmentEmail = (userId) => {
+  const user = Meteor.users.findOne(userId)
+  const address = getUserEmail(user)
   try {
-    tmpEmailEn(userId)
+    retryWithDelays(() => tmpEmailEn(userId), [1000, 3000, 5000])
     Meteor.users.update(userId, { $set: { 'profile.invitationSent': true } })
     const template = EmailForms.Collections.EmailTemplate.findOne({ name: 'enrollAccount' })._id
     EmailLogs.insert({
       userId,
       template,
-      sent: Date(),
+      sent: new Date(),
     })
   } catch (error) {
-    const user = Meteor.users.findOne(userId)
-    console.log(`Error Sending enrollment email to ${user.emails[0].address} : ${error}`)
-    throw new Meteor.Error('500', `Error Sending enrollment email to ${user.emails[0].address}`, error)
+    console.error(`Error sending enrollment email to ${address}:`, error)
+    throw new Meteor.Error('email-send-failed', `Failed to send enrollment email to ${address}`, error.message)
   }
 }
 
@@ -417,17 +438,18 @@ const tmpEmailVr = Accounts.sendVerificationEmail
 Accounts.sendVerificationEmail = (userId) => {
   const user = Meteor.users.findOne(userId)
   if (!user.fistbumpHash) {
+    const address = getUserEmail(user)
     try {
-      tmpEmailVr(userId)
+      retryWithDelays(() => tmpEmailVr(userId), [1000, 3000, 5000])
       const template = EmailForms.Collections.EmailTemplate.findOne({ name: 'verifyEmail' })._id
       EmailLogs.insert({
         userId,
         template,
-        sent: Date(),
+        sent: new Date(),
       })
     } catch (error) {
-      console.error(`Error Sending verifyEmail to ${user.emails[0].address}:`, error)
-      throw new Meteor.Error('500', `Error Sending verifyEmail to ${user.emails[0].address}`, error)
+      console.error(`Error sending verification email to ${address}:`, error)
+      throw new Meteor.Error('email-send-failed', `Failed to send verification email to ${address}`, error.message)
     }
   }
 }
