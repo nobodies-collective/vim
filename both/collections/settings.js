@@ -124,6 +124,25 @@ export const SettingsSchema = new SimpleSchema({
     },
   },
 
+  buildDailyLimits: {
+    type: Array,
+    optional: true,
+    label: 'Build Daily Limits',
+    autoform: { type: 'hidden' },
+  },
+
+  'buildDailyLimits.$': {
+    type: new SimpleSchema({
+      weekStart: { type: Date },
+      overall: { type: Number, min: 0 },
+      departments: { type: Array, optional: true },
+      'departments.$': new SimpleSchema({
+        departmentId: { type: String },
+        limit: { type: Number, min: 0 },
+      }),
+    }),
+  },
+
   cronFrequency: {
     type: String,
     optional: true,
