@@ -112,25 +112,6 @@ export function LoggedInHeader({ user }) {
               </div>
             </li>
           )}
-          {roles.isNoInfo && (
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle btn"
-                href="#"
-                id="navbarDropdown2"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <T>noinfo</T>
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown2">
-                <NavLink to="/noinfo" exact className="dropdown-item"><T>dashboard</T></NavLink>
-                <NavLink to="/noinfo/userList" className="dropdown-item"><T>all_users</T></NavLink>
-              </div>
-            </li>
-          )}
           {roles.isManagerOrMetaLead && (
             <li className="nav-item dropdown">
               <a
@@ -151,7 +132,7 @@ export function LoggedInHeader({ user }) {
               </div>
             </li>
           )}
-          {roles.isLead && (
+          {(roles.isLead || roles.isNoInfo) && (
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle btn"
@@ -164,10 +145,16 @@ export function LoggedInHeader({ user }) {
               >
                 <T>lead</T>
               </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown3">
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown4">
                 {userTeams.map((team) => (
                   <NavLink key={team._id} to={`/lead/team/${team._id}`} className="dropdown-item">{team.name}</NavLink>
                 ))}
+                {roles.isNoInfo && (
+                  <>
+                    {roles.isLead && <div className="dropdown-divider" />}
+                    <NavLink to="/noinfo" exact className="dropdown-item"><T>noinfo_dashboard</T></NavLink>
+                  </>
+                )}
               </div>
             </li>
           )}
