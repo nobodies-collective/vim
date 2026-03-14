@@ -1,4 +1,5 @@
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
+import { check } from 'meteor/check'
 
 import { Volunteers } from './init'
 import { EventSettings, SettingsSchema } from './collections/settings'
@@ -31,5 +32,16 @@ export const updateSettings = new ValidatedMethod({
   mixins: [authMixins.isManager],
   run(doc) {
     EventSettings.update(doc._id, doc.modifier)
+  },
+})
+
+export const updateBuildLimits = new ValidatedMethod({
+  name: 'settings.updateBuildLimits',
+  validate(doc) {
+    check(doc, { _id: String, buildDailyLimits: Array })
+  },
+  mixins: [authMixins.isManager],
+  run({ _id, buildDailyLimits }) {
+    EventSettings.update(_id, { $set: { buildDailyLimits } })
   },
 })
