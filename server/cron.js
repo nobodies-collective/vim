@@ -8,6 +8,7 @@ import {
   sendEnrollmentEmail,
   sendReviewEmail,
   sendCachedEmails,
+  processAccountEmailRetries,
 } from './email'
 import { processTicketCheckItem, queueTicketChecks } from './ticketCron'
 import { devConfig } from './config'
@@ -115,6 +116,7 @@ const cronActivate = ({ cronFrequency, emailManualCheck, eventPeriod }) => {
     if (!emailManualCheck) {
       setCron({ name: 'EmailCache', time: 'every 5 minutes', job: sendCachedEmails })
     }
+    setCron({ name: 'AccountEmailRetries', time: 'every 1 minutes', job: processAccountEmailRetries })
 
     signupsGC('at 03:00 every 3 days')
 

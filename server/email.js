@@ -17,6 +17,15 @@ const authMixins = Volunteers.services.auth.mixins
 const EmailCache = new Mongo.Collection('emailCache')
 const EmailLogs = new Mongo.Collection('emailLogs')
 const EmailFails = new Mongo.Collection('emailFails')
+const AccountEmailRetryQueue = new Mongo.Collection('accountEmailRetryQueue')
+
+const ACCOUNT_EMAIL_RETRY_DELAYS_MS = [
+  15 * 1000,
+  60 * 1000,
+  5 * 60 * 1000,
+  30 * 60 * 1000,
+  2 * 60 * 60 * 1000,
+]
 
 // Retry fn with explicit delay sequence (ms). Throws last error if all attempts fail.
 const retryWithDelays = (fn, delays) => {
@@ -35,6 +44,169 @@ const retryWithDelays = (fn, delays) => {
 }
 
 const getUserEmail = (user) => user?.emails?.[0]?.address ?? '(unknown)'
+
+const accountEmailTemplateId = (name) =>
+  EmailForms.Collections.EmailTemplate.findOne({ name })?._id ?? name
+
+const logAccountEmailSuccess = ({ userId, template }) => {
+  EmailLogs.insert({
+    userId,
+    template,
+    sent: new Date(),
+  })
+}
+
+const recordAccountEmailFailure = ({
+  kind,
+  userId,
+  address,
+  attempts,
+  error,
+}) => {
+  EmailFails.insert({
+    kind,
+    userId,
+    retries: attempts,
+    failedAt: new Date(),
+    errorName: error.name,
+    errorMsg: error.message,
+    errorStack: error.stack,
+    email: {
+      to: address,
+    },
+  })
+}
+
+const nextAccountEmailRetryAt = (attempts) => {
+  const delay = ACCOUNT_EMAIL_RETRY_DELAYS_MS[Math.min(
+    attempts,
+    ACCOUNT_EMAIL_RETRY_DELAYS_MS.length - 1,
+  )]
+  return new Date(Date.now() + delay)
+}
+
+const scheduleAccountEmailRetry = ({
+  kind,
+  userId,
+  address,
+  error,
+}) => {
+  const existing = AccountEmailRetryQueue.findOne({ kind, userId })
+  const attempts = (existing?.attempts ?? 0) + 1
+
+  if (attempts > ACCOUNT_EMAIL_RETRY_DELAYS_MS.length) {
+    recordAccountEmailFailure({
+      kind,
+      userId,
+      address,
+      attempts,
+      error,
+    })
+    AccountEmailRetryQueue.remove({ kind, userId })
+    return
+  }
+
+  AccountEmailRetryQueue.upsert(
+    { kind, userId },
+    {
+      $set: {
+        address,
+        lastErrorName: error.name,
+        lastErrorMessage: error.message,
+        nextAttemptAt: nextAccountEmailRetryAt(attempts - 1),
+        updatedAt: new Date(),
+      },
+      $setOnInsert: {
+        createdAt: new Date(),
+      },
+      $inc: {
+        attempts: 1,
+      },
+    },
+  )
+
+  Meteor.setTimeout(() => {
+    processAccountEmailRetries()
+  }, ACCOUNT_EMAIL_RETRY_DELAYS_MS[0] + 1000)
+}
+
+const deliverEnrollmentEmail = (userId) => {
+  baseSendEnrollmentEmail(userId)
+  Meteor.users.update(userId, { $set: { 'profile.invitationSent': true } })
+  logAccountEmailSuccess({ userId, template: accountEmailTemplateId('enrollAccount') })
+}
+
+const deliverVerificationEmail = (userId) => {
+  const user = Meteor.users.findOne(userId)
+  if (!user || user.fistbumpHash) {
+    return
+  }
+
+  baseSendVerificationEmail(userId)
+  logAccountEmailSuccess({ userId, template: accountEmailTemplateId('verifyEmail') })
+}
+
+const deliverResetPasswordEmail = (userId, email) => {
+  baseSendResetPasswordEmail(userId, email)
+  logAccountEmailSuccess({ userId, template: 'resetPassword' })
+}
+
+const deliverAccountEmailByKind = ({ kind, userId, address }) => {
+  switch (kind) {
+  case 'enrollAccount':
+    return deliverEnrollmentEmail(userId)
+  case 'verifyEmail':
+    return deliverVerificationEmail(userId)
+  case 'resetPassword':
+    return deliverResetPasswordEmail(userId, address)
+  default:
+    throw new Meteor.Error('email-kind-invalid', `Unknown account email kind: ${kind}`)
+  }
+}
+
+export const processAccountEmailRetries = () => {
+  const jobs = AccountEmailRetryQueue.find(
+    { nextAttemptAt: { $lte: new Date() } },
+    { sort: { nextAttemptAt: 1 }, limit: 10 },
+  ).fetch()
+
+  jobs.forEach((job) => {
+    const { _id, kind, userId, address, attempts } = job
+
+    try {
+      retryWithDelays(() => deliverAccountEmailByKind({ kind, userId, address }), [1000, 3000, 5000])
+      AccountEmailRetryQueue.remove({ _id })
+    } catch (error) {
+      console.error(`Retry failed for ${kind} to ${address}:`, error)
+
+      if (attempts >= ACCOUNT_EMAIL_RETRY_DELAYS_MS.length) {
+        recordAccountEmailFailure({
+          kind,
+          userId,
+          address,
+          attempts,
+          error,
+        })
+        AccountEmailRetryQueue.remove({ _id })
+      } else {
+        AccountEmailRetryQueue.update(
+          { _id },
+          {
+            $set: {
+              lastErrorName: error.name,
+              lastErrorMessage: error.message,
+              nextAttemptAt: nextAccountEmailRetryAt(attempts),
+              updatedAt: new Date(),
+            },
+            $inc: {
+              attempts: 1,
+            },
+          },
+        )
+      }
+    }
+  })
+}
 
 let emailLock = false
 let successiveFailures = 0
@@ -414,42 +586,58 @@ Accounts.emailTemplates.verifyEmail.subject = (user) => {
   const doc = EmailForms.previewTemplate('verifyEmail', user, getContext)
   return doc.subject
 }
+Accounts.emailTemplates.resetPassword.from = () => Accounts.emailTemplates.from
 
-const tmpEmailEn = Accounts.sendEnrollmentEmail
+const baseSendEnrollmentEmail = Accounts.sendEnrollmentEmail
 Accounts.sendEnrollmentEmail = (userId) => {
   const user = Meteor.users.findOne(userId)
   const address = getUserEmail(user)
   try {
-    retryWithDelays(() => tmpEmailEn(userId), [1000, 3000, 5000])
-    Meteor.users.update(userId, { $set: { 'profile.invitationSent': true } })
-    const template = EmailForms.Collections.EmailTemplate.findOne({ name: 'enrollAccount' })._id
-    EmailLogs.insert({
-      userId,
-      template,
-      sent: new Date(),
-    })
+    retryWithDelays(() => deliverEnrollmentEmail(userId), [1000, 3000, 5000])
   } catch (error) {
     console.error(`Error sending enrollment email to ${address}:`, error)
-    throw new Meteor.Error('email-send-failed', `Failed to send enrollment email to ${address}`, error.message)
+    scheduleAccountEmailRetry({
+      kind: 'enrollAccount',
+      userId,
+      address,
+      error,
+    })
   }
 }
 
-const tmpEmailVr = Accounts.sendVerificationEmail
+const baseSendVerificationEmail = Accounts.sendVerificationEmail
 Accounts.sendVerificationEmail = (userId) => {
   const user = Meteor.users.findOne(userId)
   if (!user.fistbumpHash) {
     const address = getUserEmail(user)
     try {
-      retryWithDelays(() => tmpEmailVr(userId), [1000, 3000, 5000])
-      const template = EmailForms.Collections.EmailTemplate.findOne({ name: 'verifyEmail' })._id
-      EmailLogs.insert({
-        userId,
-        template,
-        sent: new Date(),
-      })
+      retryWithDelays(() => deliverVerificationEmail(userId), [1000, 3000, 5000])
     } catch (error) {
       console.error(`Error sending verification email to ${address}:`, error)
-      throw new Meteor.Error('email-send-failed', `Failed to send verification email to ${address}`, error.message)
+      scheduleAccountEmailRetry({
+        kind: 'verifyEmail',
+        userId,
+        address,
+        error,
+      })
     }
+  }
+}
+
+const baseSendResetPasswordEmail = Accounts.sendResetPasswordEmail
+Accounts.sendResetPasswordEmail = (userId, email) => {
+  const user = Meteor.users.findOne(userId)
+  const address = email ?? getUserEmail(user)
+
+  try {
+    retryWithDelays(() => deliverResetPasswordEmail(userId, email), [1000, 3000, 5000])
+  } catch (error) {
+    console.error(`Error sending reset password email to ${address}:`, error)
+    scheduleAccountEmailRetry({
+      kind: 'resetPassword',
+      userId,
+      address,
+      error,
+    })
   }
 }
