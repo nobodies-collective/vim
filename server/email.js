@@ -19,6 +19,14 @@ const EmailLogs = new Mongo.Collection('emailLogs')
 const EmailFails = new Mongo.Collection('emailFails')
 const AccountEmailRetryQueue = new Mongo.Collection('accountEmailRetryQueue')
 
+Meteor.startup(() => {
+  AccountEmailRetryQueue.rawCollection().createIndex(
+    { kind: 1, userId: 1 },
+    { unique: true },
+  )
+  AccountEmailRetryQueue.rawCollection().createIndex({ nextAttemptAt: 1 })
+})
+
 const ACCOUNT_EMAIL_RETRY_DELAYS_MS = [
   15 * 1000,
   60 * 1000,
@@ -124,16 +132,16 @@ const scheduleAccountEmailRetry = ({
       },
     },
   )
-
-  Meteor.setTimeout(() => {
-    processAccountEmailRetries()
-  }, ACCOUNT_EMAIL_RETRY_DELAYS_MS[0] + 1000)
 }
 
 const deliverEnrollmentEmail = (userId) => {
   baseSendEnrollmentEmail(userId)
-  Meteor.users.update(userId, { $set: { 'profile.invitationSent': true } })
-  logAccountEmailSuccess({ userId, template: accountEmailTemplateId('enrollAccount') })
+  try {
+    Meteor.users.update(userId, { $set: { 'profile.invitationSent': true } })
+    logAccountEmailSuccess({ userId, template: accountEmailTemplateId('enrollAccount') })
+  } catch (err) {
+    console.error(`Enrollment email sent to ${userId} but bookkeeping failed:`, err)
+  }
 }
 
 const deliverVerificationEmail = (userId) => {
@@ -143,12 +151,20 @@ const deliverVerificationEmail = (userId) => {
   }
 
   baseSendVerificationEmail(userId)
-  logAccountEmailSuccess({ userId, template: accountEmailTemplateId('verifyEmail') })
+  try {
+    logAccountEmailSuccess({ userId, template: accountEmailTemplateId('verifyEmail') })
+  } catch (err) {
+    console.error(`Verification email sent to ${userId} but bookkeeping failed:`, err)
+  }
 }
 
 const deliverResetPasswordEmail = (userId, email) => {
   baseSendResetPasswordEmail(userId, email)
-  logAccountEmailSuccess({ userId, template: 'resetPassword' })
+  try {
+    logAccountEmailSuccess({ userId, template: accountEmailTemplateId('resetPassword') })
+  } catch (err) {
+    console.error(`Reset password email sent to ${userId} but bookkeeping failed:`, err)
+  }
 }
 
 const deliverAccountEmailByKind = ({ kind, userId, address }) => {
@@ -165,13 +181,21 @@ const deliverAccountEmailByKind = ({ kind, userId, address }) => {
 }
 
 export const processAccountEmailRetries = () => {
+  const now = new Date()
   const jobs = AccountEmailRetryQueue.find(
-    { nextAttemptAt: { $lte: new Date() } },
+    { nextAttemptAt: { $lte: now } },
     { sort: { nextAttemptAt: 1 }, limit: 10 },
   ).fetch()
 
   jobs.forEach((job) => {
     const { _id, kind, userId, address, attempts } = job
+
+    // Atomic claim: push nextAttemptAt forward to prevent concurrent processing
+    const claimed = AccountEmailRetryQueue.update(
+      { _id, nextAttemptAt: { $lte: now } },
+      { $set: { nextAttemptAt: new Date(Date.now() + 10 * 60 * 1000) } },
+    )
+    if (!claimed) return
 
     try {
       retryWithDelays(() => deliverAccountEmailByKind({ kind, userId, address }), [1000, 3000, 5000])
@@ -179,12 +203,13 @@ export const processAccountEmailRetries = () => {
     } catch (error) {
       console.error(`Retry failed for ${kind} to ${address}:`, error)
 
-      if (attempts >= ACCOUNT_EMAIL_RETRY_DELAYS_MS.length) {
+      const nextAttempts = attempts + 1
+      if (nextAttempts > ACCOUNT_EMAIL_RETRY_DELAYS_MS.length) {
         recordAccountEmailFailure({
           kind,
           userId,
           address,
-          attempts,
+          attempts: nextAttempts,
           error,
         })
         AccountEmailRetryQueue.remove({ _id })
@@ -195,7 +220,7 @@ export const processAccountEmailRetries = () => {
             $set: {
               lastErrorName: error.name,
               lastErrorMessage: error.message,
-              nextAttemptAt: nextAccountEmailRetryAt(attempts),
+              nextAttemptAt: nextAccountEmailRetryAt(nextAttempts - 1),
               updatedAt: new Date(),
             },
             $inc: {
@@ -608,19 +633,17 @@ Accounts.sendEnrollmentEmail = (userId) => {
 const baseSendVerificationEmail = Accounts.sendVerificationEmail
 Accounts.sendVerificationEmail = (userId) => {
   const user = Meteor.users.findOne(userId)
-  if (!user.fistbumpHash) {
-    const address = getUserEmail(user)
-    try {
-      retryWithDelays(() => deliverVerificationEmail(userId), [1000, 3000, 5000])
-    } catch (error) {
-      console.error(`Error sending verification email to ${address}:`, error)
-      scheduleAccountEmailRetry({
-        kind: 'verifyEmail',
-        userId,
-        address,
-        error,
-      })
-    }
+  const address = getUserEmail(user)
+  try {
+    retryWithDelays(() => deliverVerificationEmail(userId), [1000, 3000, 5000])
+  } catch (error) {
+    console.error(`Error sending verification email to ${address}:`, error)
+    scheduleAccountEmailRetry({
+      kind: 'verifyEmail',
+      userId,
+      address,
+      error,
+    })
   }
 }
 
@@ -639,5 +662,6 @@ Accounts.sendResetPasswordEmail = (userId, email) => {
       address,
       error,
     })
+    throw new Meteor.Error('email-queued', 'Email delivery delayed, will retry automatically')
   }
 }
