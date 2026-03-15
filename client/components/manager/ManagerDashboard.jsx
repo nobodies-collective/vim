@@ -97,13 +97,15 @@ export const ManagerDashboard = () => {
           <Link to="/manager/eventSettings" className="btn btn-light btn-sm">
             <T>event_settings</T>
           </Link>
-          <button
-            type="button"
-            className="btn btn-light btn-sm"
-            onClick={() => addDepartment(divisionId)}
-          >
-            <T>add_department</T>
-          </button>
+          {divisionId && (
+            <button
+              type="button"
+              className="btn btn-light btn-sm"
+              onClick={() => addDepartment(divisionId)}
+            >
+              <T>add_department</T>
+            </button>
+          )}
           {/* <button type="button" className="btn btn-light btn-sm" onClick={syncQuicket}>
           Sync Quicket guestlist
         </button> */}
